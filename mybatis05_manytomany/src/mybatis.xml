@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+	PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!--别名  -->
+	<typeAliases>
+		<package name="cn.zfy.pojo"/>
+	</typeAliases>
+
+	<!-- default引用environment的id,当前所使用的环境 -->
+	<environments default="default">
+		<!--声明可以使用的环境 ，多个， 随数据库变化而可以改变 -->
+		<environment id="default">
+			<!-- 使用原生JDBC事务 -->
+			<transactionManager type="JDBC"></transactionManager>
+			<dataSource type="POOLED">
+				<property name="driver" value="com.mysql.jdbc.Driver"/>
+				<property name="url" value="jdbc:mysql://localhost:3306/ssm"/>
+				<property name="username" value="root"/>
+				<property name="password" value="123456"/>
+			</dataSource>
+		</environment>
+	</environments>
+	<mappers>
+	
+	<!-- 文件路径是/ 类路径是. -->
+	<!-- <mapper resource="cn/zfy/mapper/FlowerMapper.xml"/> -->
+	<!-- 此时需要加载一个类； -->
+	<package name="cn.zfy.mapper"/>
+	</mappers>
+</configuration>

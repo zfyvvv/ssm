@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+         http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd" default-autowire="byName">
+	
+	<!-- 声明式事务  配置切点，配置声明式事务控制，配置JDBC，-->
+	<aop:config>
+		<!-- 配置切点范围尽可能大 -->
+		<aop:pointcut expression="execution(* zfy.service.impl.*.*(..))" id="mypoint"/>
+		<aop:advisor advice-ref="" pointcut-ref="mypoint"/>
+	</aop:config>
+	
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+		<!-- 具体需要进行事务管理的切点（方法）以ins开头的方法;常用配置-->
+		<tx:attributes>
+			<tx:method name="ins*" />
+			<tx:method name="upd*"/>
+			<tx:method name="del*"/>
+			<tx:method name="*" read-only="true"/>
+		</tx:attributes>
+	</tx:advice>
+	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
+	<!--spring框架整合mybatis，配置文件  -->
+	<!-- 数据源，配置jdbc的连接 -->
+	<context:property-placeholder location="classpath:dp.properties"/>
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${jdbc.driver}"></property>
+		<property name="url" value="${jdbc.url}"></property>
+		<property name="username" value="${jdbc.username}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+	</bean>
+	<!-- 创建工厂 -->
+	<bean id="SqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="typeAliasesPackage" value="zfy.pojo"></property>
+	</bean>
+	<!-- 扫描特定包下的mapper文件 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="zfy.mapper"></property>
+	</bean>
+	
+</beans>

@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd" default-autowire="byName">
+	
+	<!--spring框架整合mybatis，配置文件  -->
+	<!-- 数据源，配置jdbc的连接 -->
+	<context:property-placeholder location="classpath:dp.properties,classpath:second.properties"/>
+	<!--扫描注解;  -->
+	<context:component-scan base-package="cn.zfy.service.impl"></context:component-scan>
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${jdbc.driver}"></property>
+		<property name="url" value="${jdbc.url}"></property>
+		<property name="username" value="${jdbc.username}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+	</bean>
+	<!-- 创建工厂 -->
+	<!--不能取sqlSessionFactory，由于自动注入的优先级高；解释如下；  -->
+	<bean id="factory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="typeAliasesPackage" value="cn.zfy.pojo"></property>
+	</bean>
+	<!-- 扫描器 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="cn.zfy.mapper"></property>
+		<!--不行的2种方式；  -->
+		<!-- <property name="sqlSessionFactory" ref="SqlSessionFactory"></property> -->
+		<!-- <property name="sqlSessionFactory" ref="factory"></property> -->
+		<!-- 可以 -->
+		<!--使用软编码时，由于自动注入的的级别比较高，如果创建工厂中的id="sqlSessionFactory"时，
+		MapperScannerConfigurer实例化时，需要注入sqlSessionFactory它，紧接著，
+		 需要实例化SqlSessionFactoryBean，实例化它时，里面需要实例化dataSource;
+		 实例化dataSource；实例化它时，软编码的属性文件还没有加载时，就取不到； -->
+		 <!--自动注入只影响ref，不影响字符串；使用字符串，可以等待实例化完成；  -->
+		<property name="sqlSessionFactoryBeanName" value="factory"></property>
+	</bean>
+	<!--  配置service类-->
+	<bean id="userService" class="cn.zfy.service.impl.UserServiceImpl">
+	</bean>
+	
+	<!-- 配置通知类对象，方便引用 --> 
+	<aop:aspectj-autoproxy proxy-target-class="true"></aop:aspectj-autoproxy> 
+    <bean id="mybefore" class="cn.zfy.advice.MyBefore"></bean>  
+    <bean id="myafter" class="cn.zfy.advice.MyAfter"></bean>
+    <!--配置切面  -->
+ 	<aop:config>
+ 		<!-- 配置切点  -->
+ 		<aop:pointcut expression="execution(* cn.zfy.service.impl.UserServiceImpl.Login(..))" id="mypoint"/>
+ 		<!-- 引用通知  -->
+ 		<aop:advisor advice-ref="mybefore" pointcut-ref="mypoint"/>
+ 		<aop:advisor advice-ref="myafter" pointcut-ref="mypoint"/>
+ 	</aop:config> 
+	
+</beans>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zfy.mapper.StudentMapper">
+
+	<select id="selAll" resultType="Student">
+		select * from student
+	</select>
+	
+	<!--利于老师类中，onetomany进行查询学生集合；  -->
+	<select id="selByTid" resultType="student" parameterType="int">
+		select * from student where tid=#{0}
+	</select>
+	
+	<select id="selAllOneToOne" resultMap="stuMap">
+		select * from student
+	</select>
+	<!--使用resultmap-->
+	<resultMap type="student" id="stuMap" >
+		<!--主键使用id标签配置映射关系  -->
+		<id column="id" property="id"/>
+		<!--其他列使用result标签配置映射关系  -->
+		<result column="name" property="name"/>
+		<result column="age" property="age"/>
+		<result column="tid" property="tid"/>
+		<!--联合查询中，关联一个对象，使用该标签  -->
+		<!--确保TeacherMapper中有对应的方法；  根据学生外键tid查老师，老师是一个对象；-->
+		<!--property="teacher"是小写，不是大写！！！！！  -->
+		<association property="teacher"  select="cn.zfy.mapper.TeacherMapper.selById" column="tid">
+		</association>
+	</resultMap>
+</mapper>

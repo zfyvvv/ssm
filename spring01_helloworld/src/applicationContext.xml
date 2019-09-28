@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+         http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd" default-autowire="byName">
+        
+     <!--创建bean的三种方式；  -->   
+    <!--id 获取对象的标识 class 获取哪个类的对象  -->
+<!-- 	<bean id="peo" class="cn.zfy.pojo.People">
+	
+	使用有参构造器，需补全bean标签 
+	ref 引用另外一个bean value 基本数据类型或String等
+	<constructor-arg index="0" value="1"></constructor-arg>
+	<constructor-arg index="1" value="张三"></constructor-arg>
+	<constructor-arg index="2" value="23"></constructor-arg>
+	</bean>
+	
+	通过实例工厂，创建对象
+	<bean id="peofac" class="cn.zfy.pojo.PeopleFactory"></bean>
+	<bean id="peof" factory-bean="peofac" factory-method="newInstance"></bean>
+	通过静态工厂，创建对象
+	<bean id="peos" class="cn.zfy.pojo.PeopleFactoryS" factory-method="newInstance"></bean> -->
+	
+	<!-- 给bean标签赋值 -->
+	<!--当对象中注入另外一个对象时，使用该种方式；  -->
+	<bean id="peod" class="cn.zfy.pojo.People">
+		<property name="id" value="2"></property>
+		<property name="name">
+			<value>刘婷</value>
+		</property>
+		<property name="age">
+			<value>18</value>
+		</property>
+		<property name="comp" ref="com"></property>
+	</bean>
+	<!-- 依赖注入；DI -->
+	<bean id="com" class="cn.zfy.pojo.Computer">
+		<property name="band">
+			<value>Dell</value>
+		</property>
+		<property name="price">
+			<value>2000</value>
+		</property>
+	</bean>
+	
+	<!-- 自动注入 -->
+	<bean id="peoz" class="cn.zfy.pojo.People" autowire="byName"></bean>
+	<bean id="comp" class="cn.zfy.pojo.Computer"></bean>
+	
+</beans>

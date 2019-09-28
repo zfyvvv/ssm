@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+     <!--1.该springmvc.xml文件时为了配置dispatchservlet接口；  -->
+     <!--2.该bean标签是为了配置HandlerMapping接口； -->
+    <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+    	<property name="urlMap">
+    		<map>
+    			<!--解析出来的逻辑控制名 即demo1 demo2..  -->
+    			<entry key="demo" value-ref="democontroller"></entry>
+    		</map>
+    	</property>
+    </bean> 
+    <!--为了和 HandlerMapping接口中的key值进行配对；-->   
+     <bean id="democontroller" class="cn.zfy.controller.DemoController"></bean>
+     
+     <!--3.该bean标签是为了配置HandlerAdapter接口； --> 
+     <bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"></bean>
+     
+    <!--4.配置视图解析器ViewResolver  -->
+   <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+   	<!--项目根目录  -->
+   	<property name="prefix" value="/"></property>
+   	<!--页面后缀  -->
+   	<property name="suffix" value=".jsp"></property>
+   </bean>
+</beans>

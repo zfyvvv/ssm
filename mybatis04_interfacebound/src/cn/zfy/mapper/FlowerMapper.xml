@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zfy.mapper.FlowerMapper">
+	<select id="selAll" resultType="Flower">
+		select * from flower
+	</select>
+	<select id="countAll" resultType="int">
+		select count(*) from flower
+	</select>
+	<select id="selOneById" resultType="Flower" parameterType="int" >
+		select * from flower where id=#{id};
+	</select>
+	<select id="selMapByName" resultType="Flower">
+		select * from flower
+	</select>
+	
+	<insert id="insByOne" parameterType="Flower" >
+		insert into flower values(default,#{name},#{price},#{produce})
+	</insert>
+	<delete id="delById" parameterType="int" >
+		delete from flower where id=#{id};
+	</delete>
+	<update id="updById" parameterType="Flower">
+		update flower set name=#{name} where id=#{id};
+	</update>
+	
+</mapper>

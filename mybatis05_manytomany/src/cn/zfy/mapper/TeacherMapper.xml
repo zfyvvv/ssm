@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zfy.mapper.TeacherMapper">
+	<select id="selAll" resultType="Teacher">
+		select * from teacher;
+	</select>
+	
+	<!--方便学生类中，manytoone中进行查询老师对象的绑定；  -->
+	<select id="selById" resultType="teacher" parameterType="int">
+		select * from teacher where id=#{0}
+	</select>
+	
+	<select id="selAllOneToMany" resultMap="teaMap" >
+		select * from teacher
+	</select>
+	<!-- 联合查表，关联一个集合 -->
+	<resultMap id="teaMap" type="teacher" >
+		<id column="id" property="id"/>
+		<result column="name" property="name"/>
+		<!-- 根据一个老师的Tid查学生，学生是一个集合； -->
+		<collection property="list" column="id" select="cn.zfy.mapper.StudentMapper.selByTid">
+		</collection>
+	</resultMap>
+</mapper>

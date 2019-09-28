@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop 
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+        
+     <!-- 配置demo类 -->  
+    <bean id="demo" class="cn.zfy.demo.Demo"></bean>
+    <bean id="myadvice" class="cn.zfy.advice.MyAdvice"></bean>
+ 	<!-- 所有通知(前置；后置；环绕等；)  aspectj方式 -->
+ 	<!--<aop:config>
+ 		<aop:aspect ref="myadvice">
+ 			<aop:pointcut expression="execution(* cn.zfy.demo.Demo.demo())" id="pointcut"/>
+ 			<aop:before method="mybefore" pointcut-ref="pointcut"/>
+ 			<aop:after method="myafter" pointcut-ref="pointcut"/>
+ 			<aop:after-returning method="myaftering" pointcut-ref="pointcut"/>
+ 			<aop:after-throwing method="mythrow" pointcut-ref="pointcut"/>
+ 			<aop:around method="myaround" pointcut-ref="pointcut"/>
+ 		</aop:aspect>
+ 	</aop:config> -->
+ 	
+ 	<!-- aspectj方式获取节点参数 -->
+   <bean id="myadvice2" class="cn.zfy.advice.MyAdvice"></bean>
+  	<aop:config>
+ 		<aop:aspect ref="myadvice2">
+ 			<aop:pointcut expression="execution(* cn.zfy.demo.Demo.demo(String,int)) and args(name1,age1)" id="pointcut"/>
+ 			<aop:before method="mybefore1" pointcut-ref="pointcut" arg-names="name1,age1"/>
+ 		</aop:aspect>
+ 	</aop:config>
+ 	
+ 	<!-- 使用注解进行AOP配置;扫描注解指定的包代理;需要使用注解时，打开！-->
+  	<!-- <context:component-scan base-package="cn.zfy.advice,cn.zfy.demo"></context:component-scan> -->
+  	<!--true cglib动态代理  false JDK动态代理  -->
+	<!-- <aop:aspectj-autoproxy proxy-target-class="true"></aop:aspectj-autoproxy>  -->
+  	
+  	
+  	
+        
+</beans>

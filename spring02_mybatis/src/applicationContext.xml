@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+         http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd" default-autowire="byName">
+	
+	<!--一.数据源封装类，数据源 获取数据库连接 sprig-jdbc.jar包中  -->
+	<!--1.返回值就是一个DriverManagerDataSource -->
+<!-- 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+		<property name="url" value="jdbc:mysql://localhost:3306/ssm"></property>
+		<property name="username" value="root"></property>
+		<property name="password" value="123456"></property>
+	</bean>
+	
+	2.创建SqlSessionFactory对象
+	<bean id="factory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		数据源信息来源于dataSource
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
+	3.配置扫描器，相当于mybatis.xml中mappers下的package标签,扫描包的对应接口创建对象 
+	如果bean不需要被引用，可以不设置id
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		要扫描的包
+		<property name="basePackage" value="cn.zfy.mapper"></property>
+		和factory产生关系 
+		<property name="sqlSessionFactory" ref="factory"></property>
+	</bean>
+	
+	4.由spring管理service实现类；配置service实现类标签 配置类里面的全局属性 通过DI 
+	spring要给一个属性注入，这个属性所在类必须被spring管理
+	class一定是实现类，是可以new的 
+	<bean id="workerService" class="cn.zfy.service.impl.WorkerServiceImpl">
+		workerMapper此时被扫描，被spring管理； 
+		<property name="workerMapper" ref="workerMapper"></property>
+	</bean> -->
+	
+
+	<!-- 二.使用软编码， -->
+	<!-- 测试取properties属性文件中的值  -->
+	<bean id="demo" class="cn.zfy.demo.Demo"></bean>
+	
+	
+	
+	
+	<!--通过属性文件和自动注入加载jdbc|取出属性文件的值  -->
+	<context:property-placeholder location="classpath:second.properties,classpath:dp.properties"/>
+	<!--这个扫描很重要；  -->
+	<context:component-scan base-package="cn.zfy.demo"></context:component-scan>
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${jdbc.driver}"></property>
+		<property name="url" value="${jdbc.url}"></property>
+		<property name="username" value="${jdbc.username}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+	</bean>
+	<bean id="SqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="typeAliasesPackage" value="cn.zfy.pojo"></property>
+	</bean>
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="cn.zfy.mapper"></property>
+	</bean>
+	<bean id="workerService" class="cn.zfy.service.impl.WorkerServiceImpl">
+	</bean>
+	
+	<!--测试scope属性 单例和多例  -->
+	<!-- <bean id="worker" class="zfy.pojo.Worker" scope="prototype"></bean> -->
+	
+</beans>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zfy.mapper.PeopleMapper">
+	<select id="selAll" resultType="people" >
+	select * from people;
+	</select>
+
+	<!-- 动态SQL -->
+	<!--where and if   -->
+	<select id="selByNameWork" resultType="people">
+		select * from people
+		<where>
+		<if test="name!=null and name!=''">
+			and name=#{name}
+		</if>
+		
+		<if test="work!=null and work!=''">
+			and work=#{work}
+		</if>
+		</where>
+	</select>
+	
+	<!-- chose when otherwise  -->
+<!-- 	<select id="selByNameWork" resultType="people">
+		select * from people
+		<where>
+			<choose>
+				<when test="name!=null and name!=''">
+					and name=#{name}
+				</when>
+				<when test="work!=null and work!=''">
+					and work=#{work}
+				</when>
+			</choose>
+		</where>
+	</select> --> 
+	
+	<!-- set用法 -->
+	<update id="upd" parameterType="people">
+		update people
+		<set>
+			id=#{id},
+			<if test="name!=null and name!=''">
+				name=#{name},
+			</if>
+			<if test="age!=null and age!=''">
+				age=#{age},
+			</if>
+			<if test="work!=null and work!=''">
+				work=#{work},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

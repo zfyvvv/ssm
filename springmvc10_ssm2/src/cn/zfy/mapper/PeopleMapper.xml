@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zfy.mapper.PeopleMapper">
+	<!-- 接口绑定 -->
+	<insert id="insPeo"  parameterType="people">
+		insert into people values(default,#{name},#{age},#{work})
+	</insert>
+	
+	<delete id="delPeo" parameterType="people" >
+		delete from people where id=#{id};
+	</delete>
+	<update id="updPeo" parameterType="people">
+		update people set name=#{name} where id=#{id};
+	</update>
+	
+	<select id="selAll" resultType="people">
+		select * from people
+	</select>
+	
+</mapper>
