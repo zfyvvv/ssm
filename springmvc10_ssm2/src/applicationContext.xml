@@ -36,8 +36,6 @@
 		<property name="basePackage" value="cn.zfy.mapper"></property>
 		<property name="sqlSessionFactoryBeanName" value="factory22"></property>
 	</bean>
-	
-
-	
+		
 	
 </beans>

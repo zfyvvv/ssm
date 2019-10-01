@@ -29,13 +29,13 @@
 	</head>
 	<body>
 		<br /><br />
-		<img src="/photo/a.jpg" alt="" />
-		<img src="/photo/b.jpg" alt="" />
-		<img src="/photo/c.jpg" alt="" />
-		<img src="/photo/d.jpg" alt="" /><br />
-		<img src="/photo/e.jpg" alt="" />
-		<img src="/photo/f.jpg" alt="" />
-		<img src="/photo/g.jpg" alt="" />
-		<img src="/photo/h.jpg" alt="" />
+		<img src="/ssm2/photo/a.jpg" alt="" />
+		<img src="/ssm2/photo/b.jpg" alt="" />
+		<img src="/ssm2/photo/c.jpg" alt="" />
+		<img src="/ssm2/photo/d.jpg" alt="" /><br />
+		<img src="/ssm2/photo/e.jpg" alt="" />
+		<img src="/ssm2/photo/f.jpg" alt="" />
+		<img src="/ssm2/photo/g.jpg" alt="" />
+		<img src="/ssm2/photo/h.jpg" alt="" />
 	</body>
 </html>
